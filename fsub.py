@@ -7,7 +7,7 @@ from pyrogram.types import ChatPermissions, InlineKeyboardMarkup, InlineKeyboard
 
 from bot import TELEGRAM_API, TELEGRAM_HASH, CHANNEL_USERNAME, BOT_TOKEN
 
-helios = Client(
+msp = Client(
    "ForceSub Bot",
    api_id=TELEGRAM_API,
    api_hash=TELEGRAM_HASH,
@@ -17,7 +17,7 @@ helios = Client(
 # get mute request
 static_data_filter = filters.create(lambda _, __, query: query.data == "onUnmute")
 
-@helios.on_callback_query(static_data_filter)
+@msp.on_callback_query(static_data_filter)
 def _onUnMuteRequest(client, lel):
   user_id = lel.from_user.id
   chat_id = lel.message.chat.id
@@ -42,7 +42,7 @@ def _onUnMuteRequest(client, lel):
       else:
         client.answer_callback_query(lel.id, text="❗ Warning: Don't click the button if you can speak freely.", show_alert=True)
 
-@helios.on_message(filters.text & ~filters.private & ~filters.edited, group=1)
+@msp.on_message(filters.text & ~filters.private & ~filters.edited, group=1)
 def _check_member(client, message):
   chat_id = message.chat.id
   chat_u = CHANNEL_USERNAME #channel for force sub
@@ -70,4 +70,4 @@ def _check_member(client, message):
       except ChatAdminRequired:
          client.send_message(chat_id, text=f"❗ **I am not an admin in {chat_u}**\n__Make me admin in the channel__")
 
-helios.run()
+msp.run()
